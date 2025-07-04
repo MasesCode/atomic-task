@@ -24,7 +24,11 @@ const AddTaskForm: React.FC<AddTaskFormProps> = ({ onAddTask }) => {
       return;
     }
     
-    const parsedDate = dueDate ? new Date(dueDate) : undefined;
+    let parsedDate: Date | undefined = undefined;
+    if (dueDate) {
+      const [year, month, day] = dueDate.split('-').map(Number);
+      parsedDate = new Date(year, month - 1, day);
+    }
     const timeValue = dueTime || undefined;
     
     onAddTask(taskName.trim(), parsedDate, timeValue);

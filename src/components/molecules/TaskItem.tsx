@@ -18,9 +18,15 @@ interface TaskItemProps {
 const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, onEdit }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editValue, setEditValue] = useState(task.name);
-  const [editDueDate, setEditDueDate] = useState(
-    task.dueDate ? new Date(task.dueDate).toISOString().split('T')[0] : ''
-  );
+  const [editDueDate, setEditDueDate] = useState(() => {
+    if (!task.dueDate) return '';
+    const date = new Date(task.dueDate);
+    // Garantir que usa a data local, não UTC
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  });
   const [editDueTime, setEditDueTime] = useState(task.dueTime || '');
 
   const isOverdue = () => {
@@ -48,7 +54,12 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, onEdit })
     
     // Se algo mudou, salva
     if (hasNameChanged || hasDateChanged || hasTimeChanged) {
-      const parsedDate = editDueDate ? new Date(editDueDate) : undefined;
+      let parsedDate: Date | undefined = undefined;
+      if (editDueDate) {
+        // Criar a data sem problemas de timezone
+        const [year, month, day] = editDueDate.split('-').map(Number);
+        parsedDate = new Date(year, month - 1, day); // month é 0-indexed em JS
+      }
       onEdit(task.id, trimmedName, parsedDate, editDueTime || undefined);
     }
     setIsEditing(false);
@@ -59,7 +70,15 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, onEdit })
       handleEdit();
     } else if (e.key === 'Escape') {
       setEditValue(task.name);
-      setEditDueDate(task.dueDate ? new Date(task.dueDate).toISOString().split('T')[0] : '');
+      if (task.dueDate) {
+        const date = new Date(task.dueDate);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        setEditDueDate(`${year}-${month}-${day}`);
+      } else {
+        setEditDueDate('');
+      }
       setEditDueTime(task.dueTime || '');
       setIsEditing(false);
     }
@@ -141,7 +160,15 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, onEdit })
                       variant="ghost" 
                       onClick={() => {
                         setEditValue(task.name);
-                        setEditDueDate(task.dueDate ? new Date(task.dueDate).toISOString().split('T')[0] : '');
+                        if (task.dueDate) {
+                          const date = new Date(task.dueDate);
+                          const year = date.getFullYear();
+                          const month = String(date.getMonth() + 1).padStart(2, '0');
+                          const day = String(date.getDate()).padStart(2, '0');
+                          setEditDueDate(`${year}-${month}-${day}`);
+                        } else {
+                          setEditDueDate('');
+                        }
                         setEditDueTime(task.dueTime || '');
                         setIsEditing(false);
                       }}
