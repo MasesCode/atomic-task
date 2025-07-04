@@ -1,6 +1,6 @@
 
 import { render, screen, fireEvent } from '@testing-library/react';
-import { vi, describe, it, expect } from 'vitest';
+import { vi, describe, it, expect, beforeEach } from 'vitest';
 import TaskItem from '@/components/molecules/TaskItem';
 import { Task } from '@/types/Task';
 
@@ -45,7 +45,8 @@ describe('TaskItem', () => {
   it('calls onDelete when delete button is clicked', () => {
     render(<TaskItem {...mockProps} />);
     
-    const deleteButton = screen.getByRole('button', { name: /delete/i });
+    // O botão de delete tem um ícone X mas não tem texto "delete", então vamos buscar pelo tooltip ou posição
+    const deleteButton = screen.getByRole('button', { name: '' });
     fireEvent.click(deleteButton);
     
     expect(mockProps.onDelete).toHaveBeenCalledWith('1');
@@ -54,7 +55,8 @@ describe('TaskItem', () => {
   it('enters edit mode when edit button is clicked', () => {
     render(<TaskItem {...mockProps} />);
     
-    const editButton = screen.getByRole('button', { name: /edit/i });
+    // Buscar especificamente pelo botão "Edit" (não pelo texto dentro do aria-label)
+    const editButton = screen.getByText('Edit');
     fireEvent.click(editButton);
     
     expect(screen.getByDisplayValue('Test Task')).toBeInTheDocument();
@@ -68,6 +70,8 @@ describe('TaskItem', () => {
     
     render(<TaskItem {...mockProps} task={overdueTask} />);
     
-    expect(screen.getByTestId('alert-triangle') || screen.getByRole('img')).toBeInTheDocument();
+    // Buscar pelo ícone de AlertTriangle através da classe CSS
+    const container = document.querySelector('.lucide-triangle-alert');
+    expect(container).toBeInTheDocument();
   });
 });

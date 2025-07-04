@@ -16,7 +16,8 @@ describe('useLocalStorage', () => {
   });
 
   it('should return stored value from localStorage', () => {
-    localStorage.setItem('test-key', JSON.stringify('stored-value'));
+    // Mock do getItem para retornar o valor armazenado
+    vi.mocked(localStorage.getItem).mockReturnValue(JSON.stringify('stored-value'));
     
     const { result } = renderHook(() => useLocalStorage('test-key', 'initial-value'));
     

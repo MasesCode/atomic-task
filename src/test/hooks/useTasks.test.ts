@@ -32,10 +32,10 @@ describe('useTasks', () => {
     });
   });
 
-  it('should add a new task', () => {
+  it('should add a new task', async () => {
     const mockSetTasks = vi.fn();
-    const { useLocalStorage } = require('@/hooks/useLocalStorage');
-    useLocalStorage.mockReturnValue([[], mockSetTasks]);
+    const { useLocalStorage } = await import('@/hooks/useLocalStorage');
+    vi.mocked(useLocalStorage).mockReturnValue([[], mockSetTasks]);
 
     const { result } = renderHook(() => useTasks());
     
@@ -46,7 +46,7 @@ describe('useTasks', () => {
     expect(mockSetTasks).toHaveBeenCalled();
   });
 
-  it('should toggle task completion', () => {
+  it('should toggle task completion', async () => {
     const mockTasks = [
       {
         id: '1',
@@ -56,8 +56,8 @@ describe('useTasks', () => {
       },
     ];
     const mockSetTasks = vi.fn();
-    const { useLocalStorage } = require('@/hooks/useLocalStorage');
-    useLocalStorage.mockReturnValue([mockTasks, mockSetTasks]);
+    const { useLocalStorage } = await import('@/hooks/useLocalStorage');
+    vi.mocked(useLocalStorage).mockReturnValue([mockTasks, mockSetTasks]);
 
     const { result } = renderHook(() => useTasks());
     
@@ -68,7 +68,7 @@ describe('useTasks', () => {
     expect(mockSetTasks).toHaveBeenCalled();
   });
 
-  it('should delete a task', () => {
+  it('should delete a task', async () => {
     const mockTasks = [
       {
         id: '1',
@@ -78,8 +78,8 @@ describe('useTasks', () => {
       },
     ];
     const mockSetTasks = vi.fn();
-    const { useLocalStorage } = require('@/hooks/useLocalStorage');
-    useLocalStorage.mockReturnValue([mockTasks, mockSetTasks]);
+    const { useLocalStorage } = await import('@/hooks/useLocalStorage');
+    vi.mocked(useLocalStorage).mockReturnValue([mockTasks, mockSetTasks]);
 
     const { result } = renderHook(() => useTasks());
     

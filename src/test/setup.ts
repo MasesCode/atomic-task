@@ -9,9 +9,9 @@ const localStorageMock = {
   removeItem: vi.fn(),
   clear: vi.fn(),
 };
-global.localStorage = localStorageMock as any;
+vi.stubGlobal('localStorage', localStorageMock);
 
 // Mock crypto.randomUUID
-global.crypto = {
+vi.stubGlobal('crypto', {
   randomUUID: vi.fn(() => 'test-uuid-123'),
-} as any;
+});
