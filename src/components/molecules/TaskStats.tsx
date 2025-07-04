@@ -11,14 +11,14 @@ interface TaskStatsProps {
 const TaskStats: React.FC<TaskStatsProps> = ({ stats }) => {
   return (
     <TooltipProvider>
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-6">
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6 mb-4 sm:mb-6">
+        <div className="flex items-center justify-center">
+          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6">
             <Tooltip>
               <TooltipTrigger asChild>
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                  <Text variant="body" className="text-gray-600 font-medium">
+                  <Text variant="body" className="text-gray-600 font-medium text-sm sm:text-base">
                     Total: {stats.total}
                   </Text>
                 </div>
@@ -32,7 +32,7 @@ const TaskStats: React.FC<TaskStatsProps> = ({ stats }) => {
               <TooltipTrigger asChild>
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
-                  <Text variant="body" className="text-gray-600 font-medium">
+                  <Text variant="body" className="text-gray-600 font-medium text-sm sm:text-base">
                     Active: {stats.pending}
                   </Text>
                 </div>
@@ -46,7 +46,7 @@ const TaskStats: React.FC<TaskStatsProps> = ({ stats }) => {
               <TooltipTrigger asChild>
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                  <Text variant="body" className="text-gray-600 font-medium">
+                  <Text variant="body" className="text-gray-600 font-medium text-sm sm:text-base">
                     Completed: {stats.completed}
                   </Text>
                 </div>
@@ -61,7 +61,7 @@ const TaskStats: React.FC<TaskStatsProps> = ({ stats }) => {
                 <TooltipTrigger asChild>
                   <div className="flex items-center gap-2">
                     <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                    <Text variant="body" className="text-red-600 font-medium">
+                    <Text variant="body" className="text-red-600 font-medium text-sm sm:text-base">
                       Overdue: {stats.overdue}
                     </Text>
                   </div>

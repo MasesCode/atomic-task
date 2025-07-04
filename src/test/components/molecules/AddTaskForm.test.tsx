@@ -8,16 +8,17 @@ describe('AddTaskForm', () => {
     const onAddTask = vi.fn();
     render(<AddTaskForm onAddTask={onAddTask} />);
     
-    expect(screen.getByPlaceholderText('Add a new task...')).toBeInTheDocument();
-    expect(screen.getByText('Add Task')).toBeInTheDocument();
+    expect(screen.getAllByPlaceholderText('Add a new task...').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Add Task').length).toBeGreaterThan(0);
   });
 
   it('calls onAddTask when form is submitted with valid data', () => {
     const onAddTask = vi.fn();
     render(<AddTaskForm onAddTask={onAddTask} />);
     
-    const input = screen.getByPlaceholderText('Add a new task...');
-    const submitButton = screen.getByText('Add Task');
+    // Pegar o primeiro input (versão desktop)
+    const input = screen.getAllByPlaceholderText('Add a new task...')[0];
+    const submitButton = screen.getAllByText('Add Task')[0];
     
     fireEvent.change(input, { target: { value: 'New Task' } });
     fireEvent.click(submitButton);
@@ -29,7 +30,7 @@ describe('AddTaskForm', () => {
     const onAddTask = vi.fn();
     render(<AddTaskForm onAddTask={onAddTask} />);
     
-    const submitButton = screen.getByText('Add Task');
+    const submitButton = screen.getAllByText('Add Task')[0];
     fireEvent.click(submitButton);
     
     expect(onAddTask).not.toHaveBeenCalled();
@@ -39,10 +40,10 @@ describe('AddTaskForm', () => {
     const onAddTask = vi.fn();
     render(<AddTaskForm onAddTask={onAddTask} />);
     
-    const input = screen.getByPlaceholderText('Add a new task...') as HTMLInputElement;
+    const input = screen.getAllByPlaceholderText('Add a new task...')[0] as HTMLInputElement;
     
     fireEvent.change(input, { target: { value: 'New Task' } });
-    fireEvent.click(screen.getByText('Add Task'));
+    fireEvent.click(screen.getAllByText('Add Task')[0]);
     
     expect(input.value).toBe('');
   });

@@ -41,9 +41,10 @@ const AddTaskForm: React.FC<AddTaskFormProps> = ({ onAddTask }) => {
 
   return (
     <TooltipProvider>
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6 mb-4 sm:mb-6">
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="flex gap-3">
+          {/* Layout Desktop */}
+          <div className="hidden sm:flex gap-3">
             <Tooltip>
               <TooltipTrigger asChild>
                 <Input
@@ -98,6 +99,75 @@ const AddTaskForm: React.FC<AddTaskFormProps> = ({ onAddTask }) => {
                 <Button 
                   type="submit" 
                   className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium flex items-center gap-2 h-12"
+                >
+                  <Plus size={20} />
+                  Add Task
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Add new task to your list</p>
+              </TooltipContent>
+            </Tooltip>
+          </div>
+
+          {/* Layout Mobile */}
+          <div className="sm:hidden space-y-3">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Input
+                  type="text"
+                  placeholder="Add a new task..."
+                  value={taskName}
+                  onChange={handleInputChange}
+                  error={error}
+                  className="w-full h-12 px-4 rounded-lg border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Enter your task description</p>
+              </TooltipContent>
+            </Tooltip>
+            
+            <div className="flex gap-2">
+              <div className="flex items-center gap-2 flex-1">
+                <Calendar size={16} className="text-gray-500" />
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <DateInput
+                      value={dueDate}
+                      onChange={(e) => setDueDate(e.target.value)}
+                      className="flex-1 h-10 px-3 text-sm rounded-lg border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                    />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Set due date (optional)</p>
+                  </TooltipContent>
+                </Tooltip>
+              </div>
+              
+              <div className="flex items-center gap-2 flex-1">
+                <Clock size={16} className="text-gray-500" />
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Input
+                      type="time"
+                      value={dueTime}
+                      onChange={(e) => setDueTime(e.target.value)}
+                      className="flex-1 h-10 px-3 text-sm rounded-lg border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                    />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Set due time (optional)</p>
+                  </TooltipContent>
+                </Tooltip>
+              </div>
+            </div>
+            
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button 
+                  type="submit" 
+                  className="bg-blue-600 hover:bg-blue-700 text-white w-full py-3 rounded-lg font-medium flex items-center justify-center gap-2 h-12"
                 >
                   <Plus size={20} />
                   Add Task

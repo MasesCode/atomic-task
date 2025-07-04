@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Task } from '@/types/Task';
 import Checkbox from '@/components/atoms/Checkbox';
@@ -85,13 +84,13 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, onEdit })
 
   return (
     <TooltipProvider>
-      <div className={`group flex items-center justify-between p-4 bg-white border rounded-lg shadow-sm hover:shadow-md transition-all duration-200 animate-fade-in ${
+      <div className={`group flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 sm:p-4 bg-white border rounded-lg shadow-sm hover:shadow-md transition-all duration-200 animate-fade-in ${
         isOverdue() ? 'border-red-300 bg-red-50' : 'border-gray-200'
       }`}>
         <div className="flex items-center flex-1 min-w-0">
           <Tooltip>
             <TooltipTrigger asChild>
-              <div>
+              <div className="flex-shrink-0">
                 <Checkbox
                   checked={task.completed}
                   onChange={() => onToggle(task.id)}
@@ -110,7 +109,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, onEdit })
                   value={editValue}
                   onChange={(e) => setEditValue(e.target.value)}
                   onKeyDown={handleKeyPress}
-                  className="flex-1"
+                  className="flex-1 text-sm sm:text-base"
                   autoFocus
                 />
                 <Tooltip>
@@ -143,15 +142,15 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, onEdit })
                   </TooltipContent>
                 </Tooltip>
               </div>
-              <div className="flex gap-2">
+              <div className="flex flex-col sm:flex-row gap-2">
                 <div className="flex items-center gap-1 flex-1">
-                  <Calendar size={14} className="text-gray-500" />
+                  <Calendar size={14} className="text-gray-500 flex-shrink-0" />
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <DateInput
                         value={editDueDate}
                         onChange={(e) => setEditDueDate(e.target.value)}
-                        className="flex-1"
+                        className="flex-1 text-sm"
                       />
                     </TooltipTrigger>
                     <TooltipContent>
@@ -160,14 +159,14 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, onEdit })
                   </Tooltip>
                 </div>
                 <div className="flex items-center gap-1 flex-1">
-                  <Clock size={14} className="text-gray-500" />
+                  <Clock size={14} className="text-gray-500 flex-shrink-0" />
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Input
                         type="time"
                         value={editDueTime}
                         onChange={(e) => setEditDueTime(e.target.value)}
-                        className="flex-1"
+                        className="flex-1 text-sm"
                       />
                     </TooltipTrigger>
                     <TooltipContent>
@@ -179,15 +178,15 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, onEdit })
             </div>
           ) : (
             <button 
-              className="ml-3 flex-1 cursor-pointer text-left bg-transparent border-none p-0 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 rounded"
+              className="ml-3 flex-1 cursor-pointer text-left bg-transparent border-none p-0 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 rounded min-w-0"
               onClick={() => setIsEditing(true)}
               aria-label="Click to edit task"
             >
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 mb-1">
                 {isOverdue() && (
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <AlertTriangle size={16} className="text-red-500" />
+                      <AlertTriangle size={16} className="text-red-500 flex-shrink-0" />
                     </TooltipTrigger>
                     <TooltipContent>
                       <p>This task is overdue</p>
@@ -197,7 +196,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, onEdit })
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Text 
-                      className={`${task.completed ? 'line-through text-gray-500' : 'text-gray-900'} truncate`}
+                      className={`${task.completed ? 'line-through text-gray-500' : 'text-gray-900'} truncate text-sm sm:text-base`}
                     >
                       {task.name}
                     </Text>
@@ -207,13 +206,13 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, onEdit })
                   </TooltipContent>
                 </Tooltip>
               </div>
-              <div className="flex items-center gap-4 mt-1">
-                <Text variant="caption">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4">
+                <Text variant="caption" className="text-xs">
                   Created on {formatCreatedDate()}
                 </Text>
                 {formatDueDate() && (
-                  <Text variant="caption" className={`flex items-center gap-1 ${isOverdue() ? 'text-red-600 font-medium' : 'text-blue-600'}`}>
-                    <Calendar size={12} />
+                  <Text variant="caption" className={`flex items-center gap-1 text-xs ${isOverdue() ? 'text-red-600 font-medium' : 'text-blue-600'}`}>
+                    <Calendar size={10} className="flex-shrink-0" />
                     Due: {formatDueDate()}
                   </Text>
                 )}
@@ -223,13 +222,14 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, onEdit })
         </div>
         
         {!isEditing && (
-          <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+          <div className="flex items-center gap-2 mt-3 sm:mt-0 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200 justify-end">
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
                   size="sm"
                   variant="ghost"
                   onClick={() => setIsEditing(true)}
+                  className="text-xs sm:text-sm"
                 >
                   Edit
                 </Button>
