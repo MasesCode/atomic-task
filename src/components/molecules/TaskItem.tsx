@@ -35,9 +35,21 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, onEdit })
   };
 
   const handleEdit = () => {
-    if (editValue.trim() && editValue !== task.name) {
+    const trimmedName = editValue.trim();
+    const hasNameChanged = trimmedName && trimmedName !== task.name;
+    const hasDateChanged = editDueDate !== (task.dueDate ? new Date(task.dueDate).toISOString().split('T')[0] : '');
+    const hasTimeChanged = editDueTime !== (task.dueTime || '');
+    
+    // Se o nome está vazio, não salva
+    if (!trimmedName) {
+      setIsEditing(false);
+      return;
+    }
+    
+    // Se algo mudou, salva
+    if (hasNameChanged || hasDateChanged || hasTimeChanged) {
       const parsedDate = editDueDate ? new Date(editDueDate) : undefined;
-      onEdit(task.id, editValue.trim(), parsedDate, editDueTime || undefined);
+      onEdit(task.id, trimmedName, parsedDate, editDueTime || undefined);
     }
     setIsEditing(false);
   };
